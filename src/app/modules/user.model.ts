@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { Address, FullName, User, UserOrder } from './user/user.interface';
+import { TAddress, TFullName, TUser, TUserOrder } from './user/user.interface';
 
 // MongoDB Schema for FullName
-const fullNameSchema = new Schema<FullName>({
+const fullNameSchema = new Schema<TFullName>({
   firstName: {
     type: String,
     required: true,
@@ -14,7 +14,7 @@ const fullNameSchema = new Schema<FullName>({
 });
 
 // MongoDB Schema for Address
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<TAddress>({
   street: {
     type: String,
     required: true,
@@ -31,7 +31,7 @@ const addressSchema = new Schema<Address>({
 
 // MongoDB Schema for Order
 
-const orderSchema = new Schema<UserOrder>({
+const orderSchema = new Schema<TUserOrder>({
   productName: {
     type: String,
     required: true,
@@ -48,7 +48,7 @@ const orderSchema = new Schema<UserOrder>({
 
 // MongoDB Schema for User
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<TUser>({
   userId: {
     type: Number,
     unique: true,
@@ -92,4 +92,4 @@ const userSchema = new Schema<User>({
   },
 });
 
-export const UserModel = model<User>('User', userSchema);
+export const UserModel = model<TUser>('User', userSchema);

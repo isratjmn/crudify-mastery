@@ -1,30 +1,30 @@
 // import { Schema, model, connect } from 'mongoose';
 
-export type User = {
+export type TUser = {
   userId: number;
   username: string;
   password?: string;
-  fullName: FullName;
+  fullName: TFullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: Address;
-  orders?: UserOrder[];
+  address: TAddress;
+  orders?: TUserOrder[];
 };
 
-export type UserOrder = {
+export type TUserOrder = {
   productName: string;
   price: number;
   quantity: number;
 };
 
-export type Address = {
+export type TAddress = {
   street: string;
   city: string;
   country: string;
 };
-export type FullName = {
+export type TFullName = {
   firstName: string;
   lastName: string;
 };

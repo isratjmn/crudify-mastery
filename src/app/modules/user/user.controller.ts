@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
+import { validateUser } from './user.validation';
 
 // Controller function for creating a new user
 const createUser = async (req: Request, res: Response) => {
   try {
-    // const user = req.body.user;
     const { user: userData } = req.body;
     // Check if the user.hobbies is an array. If not, make it an array.
     const hobbies = Array.isArray(userData.hobbies)
       ? userData.hobbies
       : [userData.hobbies];
+
+    const validateData = validateUser(userData);
+    // Create user in the database
     const result = await UserServices.createUserIntoDB({
-      ...userData,
+      ...validateData,
       hobbies,
     });
     res.status(200).json({
@@ -20,9 +23,7 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User Created Successfully',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    // Handle errors, send an appropriate response
     res.status(400).json({
       success: false,
       message: 'Failed to create user!',

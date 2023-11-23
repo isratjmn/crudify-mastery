@@ -1,8 +1,8 @@
 import { UserModel } from '../user.model';
-import { User } from './user.interface';
+import { TUser } from './user.interface';
 
-const createUserIntoDB = async (user: User) => {
-  const result = await UserModel.create(user);
+const createUserIntoDB = async (user: TUser) => {
+  const result = await UserModel.create(user); // Built in Static Method
   return result;
 };
 
