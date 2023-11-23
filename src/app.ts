@@ -6,9 +6,10 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
+const getAController = (req: Request, res: Response) => {
   res.send('Hello World!');
-});
+};
+app.get('/', getAController);
 
 console.log(process.cwd());
 
