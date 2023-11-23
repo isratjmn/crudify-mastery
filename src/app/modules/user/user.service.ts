@@ -15,11 +15,7 @@ const getAllUsersFromDB = async () => {
   const users = await User.find(
     {},
     {
-      _id: 0,
-      userId: 0,
       password: 0,
-      isActive: 0,
-      hobbies: 0,
       orders: 0,
     }
   );
@@ -32,7 +28,7 @@ const getAllUsersFromDB = async () => {
 //* 3. Service to get a User by Id
 const getUserByIdFromDB = async (userId: number) => {
   try {
-    const user = await User.findOne({ userId }, { password: 0 });
+    const user = await User.findOne({ userId });
     if (!user) {
       throw new Error('User not Found');
     }
