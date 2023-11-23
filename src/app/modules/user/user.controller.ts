@@ -1,7 +1,20 @@
 import { Request, Response } from 'express';
+import { UserServices } from './user.service';
 
-const createUser = (req: Request, res: Response) => {
-  const user = req.body;
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const user = req.body;
+    const result = await UserServices.createUserIntoDB(user);
+    res.status(200).json({
+        success: true,
+        message: 'User Is Created Successfully',
+        data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  // Will call service function to send this data
+export const userControllers = {
+  createUser,
 };

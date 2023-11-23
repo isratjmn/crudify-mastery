@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Address, FullName, User, UserOrder } from './user/user.interface';
 
 const fullNameSchema = new Schema<FullName>({
@@ -80,5 +80,4 @@ const userSchema = new Schema<User>({
     },
 });
 
-
-const User = model<User>('User', userSchema);
+export const UserModel = model<User>('User', userSchema);
