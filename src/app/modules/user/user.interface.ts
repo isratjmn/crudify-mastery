@@ -3,14 +3,14 @@
 export type User = {
   userId: number;
   username: string;
-  password: string;
+  password?: string;
   fullName: FullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
   address: Address;
-  orders: UserOrder[];
+  orders?: UserOrder[];
 };
 
 export type UserOrder = {

@@ -6,6 +6,19 @@ const createUserIntoDB = async (user: User) => {
   return result;
 };
 
+// Service function to get all users
+const getAllUsersFromDB = async () => {
+  const result = await UserModel.find();
+  return result;
+};
+
+// Service Function to get a User by Id
+const getUserByIdFromDB = async (userId: number) => {
+  const result = await UserModel.findOne({ userId });
+  return result;
+};
 export const UserServices = {
   createUserIntoDB,
+  getAllUsersFromDB,
+  getUserByIdFromDB,
 };
