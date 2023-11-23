@@ -77,8 +77,34 @@ const getSingleUserById = async (req: Request, res: Response) => {
   }
 };
 
+// Delete a User by userId
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    // Get the user id from the request params
+    const { userId } = req.params;
+    await UserServices.deleteUserFromDB(Number(userId));
+
+    // Send the response
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Failed to fetch user!',
+      error: {
+        code: 400,
+        description: error.message,
+      },
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
   getAllUsers,
-  getSingleUserById
+  getSingleUserById,
+  deleteUser,
 };
