@@ -4,7 +4,7 @@ import { userControllers } from './user.controller';
 const router = express.Router();
 
 //* Route to create a new user
-router.post('/create-user', userControllers.createUser);
+router.post('/', userControllers.createUser);
 
 //* Route to retrieve all users with specific fields
 router.get('/', userControllers.getAllUsers);

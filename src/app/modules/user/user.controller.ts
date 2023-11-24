@@ -5,14 +5,13 @@ import userValidationSchema from './user.validation';
 // import { validateUser } from './user.validation';
 
 //* 1. Create a new User
-const createUser = async (req: Request, res: Response) => {
+
+const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { user: userData } = req.body;
+    const user = req.body;
     // Check if the user.hobbies is an array. If not, make it an array.
-    const hobbies = Array.isArray(userData.hobbies)
-      ? userData.hobbies
-      : [userData.hobbies];
-    const validateData = userValidationSchema.parse(userData);
+    const hobbies = Array.isArray(user.hobbies) ? user.hobbies : [user.hobbies];
+    const validateData = userValidationSchema.parse(user);
     const result = await UserServices.createUserIntoDB({
       ...validateData,
       hobbies,

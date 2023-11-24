@@ -2,10 +2,7 @@ import { User } from '../user.model';
 import { TUser } from './user.interface';
 
 //* 1. Service to Create a new User
-const createUserIntoDB = async (user: TUser) => {
-  if (await User.isUserExist(user.userId)) {
-    throw new Error(`User ${user.userId} already exists`);
-  }
+const createUserIntoDB = async (user: TUser): Promise<TUser> => {
   const result = await User.create(user);
   return result;
 };
