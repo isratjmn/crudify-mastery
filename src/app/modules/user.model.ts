@@ -6,6 +6,8 @@ import {
   TUserOrder,
   userModel,
 } from './user/user.interface';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 // MongoDB Schema for FullName
 const fullNameSchema = new Schema<TFullName>({
@@ -95,6 +97,24 @@ const userSchema = new Schema<TUser, userModel>({
   orders: {
     type: [orderSchema],
   },
+});
+
+// Pre Save  Hook for the User Schema
+userSchema.pre('save', async function (next) {
+  // console.log(this, 'pre hook: we will save the data');
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  // Making password hash
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+// Post Save  Hook for the User Schema
+userSchema.post('save', function () {
+  console.log(this, 'post hook: we saved our data');
 });
 
 // Custom static method for the user schema

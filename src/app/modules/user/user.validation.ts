@@ -1,6 +1,7 @@
 import { z, ZodError } from 'zod';
 import { TUser } from './user.interface';
 
+
 // Validation schema for FullName
 const fullNameValidation = z.object({
   firstName: z.string().min(1, { message: 'First name cannot be empty' }),
@@ -25,7 +26,7 @@ const orderValidation = z.object({
 export const userValidation = z.object({
   userId: z.number().min(1, { message: 'User ID must be a positive number' }),
   username: z.string().min(1, { message: 'Username is required' }),
-  password: z.string().min(1, { message: 'Password is required' }).optional(),
+  password: z.string().min(1, { message: 'Password is required' }),
   fullName: fullNameValidation,
   age: z
     .number()
