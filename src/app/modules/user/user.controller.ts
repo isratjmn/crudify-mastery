@@ -77,6 +77,31 @@ const getSingleUserById = async (req: Request, res: Response) => {
     });
   }
 };
+// Update User 
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const updatedUserData = req.body;
+    // Validate updated user data
+    const parsedData = validateUser(updatedUserData);
+    // Update user in the database
+    const updatedUser = await UserServices.updateUserInDB(parseInt(userId, 10), parsedData);
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully!',
+      data: updatedUser,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Failed to Update User!',
+      error: {
+        code: 400,
+        description: error.message,
+      },
+    });
+  }
+};
 
 // Delete a User by userId
 const deleteUser = async (req: Request, res: Response) => {
@@ -94,7 +119,7 @@ const deleteUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: 'Failed to fetch user!',
+      message: 'Failed to Delete user!',
       error: {
         code: 400,
         description: error.message,
@@ -107,5 +132,7 @@ export const userControllers = {
   createUser,
   getAllUsers,
   getSingleUserById,
+  updateUser,
   deleteUser,
+
 };

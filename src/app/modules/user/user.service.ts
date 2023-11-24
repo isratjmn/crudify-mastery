@@ -21,6 +21,25 @@ const getUserByIdFromDB = async (userId: number) => {
   return result;
 };
 
+// Service for Update a User by Id
+const updateUserInDB = async (userId: number, updatedUserData: TUser) => {
+  try {
+    const existingUser = await User.findOneAndUpdate(
+      { userId },
+      updatedUserData,
+      { new: true }
+    );
+
+    if (!existingUser) {
+      throw new Error('User do not Found');
+    }
+
+    return existingUser;
+  } catch (error) {
+    throw new Error('Failed to Update User');
+  }
+};
+
 // Service Function to delete a user by Id
 const deleteUserFromDB = async (userId: number) => {
   const user = await User.findOneAndDelete({ userId });
@@ -36,4 +55,5 @@ export const UserServices = {
   getAllUsersFromDB,
   getUserByIdFromDB,
   deleteUserFromDB,
+  updateUserInDB,
 };

@@ -101,7 +101,6 @@ const userSchema = new Schema<TUser, userModel>({
 
 // Pre Save  Hook for the User Schema
 userSchema.pre('save', async function (next) {
-  // console.log(this, 'pre hook: we will save the data');
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   // Making password hash
@@ -113,8 +112,9 @@ userSchema.pre('save', async function (next) {
 });
 
 // Post Save  Hook for the User Schema
-userSchema.post('save', function () {
-  console.log(this, 'post hook: we saved our data');
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
 });
 
 // Custom static method for the user schema
