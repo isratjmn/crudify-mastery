@@ -18,7 +18,7 @@ Before you begin, make sure you have the following installed on your machine:
 ## Clone the repository:
 
 ```bash
-  git clone github.com/fahimshariar28/data-hub.git
+  git clone https://github.com/isratjmn/crudify-mastery
 ```
 
 ## Navigate to the project directory:
