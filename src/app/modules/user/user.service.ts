@@ -1,6 +1,7 @@
 import { User } from '../user.model';
 import { TUser } from './user.interface';
 
+//* 1. Service to Create a new User
 const createUserIntoDB = async (user: TUser) => {
   if (await User.isUserExist(user.userId)) {
     throw new Error(`User ${user.userId} already exists`);
@@ -9,9 +10,8 @@ const createUserIntoDB = async (user: TUser) => {
   return result;
 };
 
-// Service function to get all users
+//* 2. Service to Get All Users Data
 const getAllUsersFromDB = async () => {
-  // Fetch users with specified fields using projection
   const users = await User.find(
     {},
     {
@@ -29,13 +29,21 @@ const getAllUsersFromDB = async () => {
   return users;
 };
 
-// Service Function to get a User by Id
+//* 3. Service to get a User by Id
 const getUserByIdFromDB = async (userId: number) => {
-  const result = await User.findOne({ userId });
-  return result;
+  try {
+    const user = await User.findOne({ userId }, { password: 0 });
+    if (!user) {
+      throw new Error('User not Found');
+    }
+
+    return user;
+  } catch (error) {
+    throw new Error('Failed to Fetch User');
+  }
 };
 
-// Service for Update a User by Id
+//* 4.Service for Update a User by Id
 const updateUserInDB = async (userId: number, updatedUserData: TUser) => {
   try {
     const existingUser = await User.findOneAndUpdate(
@@ -54,7 +62,7 @@ const updateUserInDB = async (userId: number, updatedUserData: TUser) => {
   }
 };
 
-// Service Function to delete a user by Id
+//* 5. Service to delete a user by Id
 const deleteUserFromDB = async (userId: number) => {
   const user = await User.findOneAndDelete({ userId });
 
@@ -64,8 +72,8 @@ const deleteUserFromDB = async (userId: number) => {
   return null;
 };
 
-
-// Service function to add an Order
+//? Order Management
+//? 1. Service function to add an Order
 const addProductToOrder = async (
   userId: number,
   orderData: { productName: string; price: number; quantity: number }
@@ -89,8 +97,7 @@ const addProductToOrder = async (
   }
 };
 
-
-// Service function to get Orders of a User
+//? 2. Service function to get Orders of a User
 const getAllOrdersForUser = async (userId: number) => {
   const user = await User.findOne(
     { userId },
@@ -102,19 +109,23 @@ const getAllOrdersForUser = async (userId: number) => {
   return user.orders || [];
 };
 
-// Calculate the total price of the Orders
+//? 3. Calculate the total price of the Orders
 const calculateTotalPrice = async (userId: number) => {
   try {
     const user = await User.findOne({ userId });
     if (!user) {
       throw new Error('User Not Found');
     }
-    const totalPrice = user.orders?.reduce((acc, order) => acc + order.price * order.quantity, 0) || 0;
+    const totalPrice =
+      user.orders?.reduce(
+        (acc, order) => acc + order.price * order.quantity,
+        0
+      ) || 0;
     return totalPrice;
   } catch (error) {
     throw new Error('Failed to Calculate Total Price');
   }
-}
+};
 
 export const UserServices = {
   createUserIntoDB,
@@ -124,5 +135,5 @@ export const UserServices = {
   updateUserInDB,
   addProductToOrder,
   getAllOrdersForUser,
-  calculateTotalPrice
+  calculateTotalPrice,
 };

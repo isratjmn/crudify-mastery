@@ -31,7 +31,7 @@ export type TUser = {
     orders?: TUserOrder[];
 };
 
-// For Creating Static method
+// For Creating Static Method
 export interface userModel extends Model<TUser> {
     isUserExist(userId: number): Promise<TUser | null>;
 }

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 import { validateUser } from './user.validation';
 
-// Controller function for creating a new user
+//* 1. Create a new User
 const createUser = async (req: Request, res: Response) => {
   try {
     const { user: userData } = req.body;
@@ -34,6 +34,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+//* 2. Get All User Data
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await UserServices.getAllUsersFromDB();
@@ -55,28 +56,40 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// Get a user by id
+//* 3. Get a User by Id
 const getSingleUserById = async (req: Request, res: Response) => {
+
   try {
-    const userId = parseInt(req.params.userId, 10);
-    const result = await UserServices.getUserByIdFromDB(userId);
+    const { userId } = req.params;
+    const user = await UserServices.getUserByIdFromDB(parseInt(userId));
     res.status(200).json({
       success: true,
-      message: 'User is Retrive successfully!',
-      data: result,
+      message: 'User fetched successfully!',
+      data: {
+        userId: user.userId,
+        username: user.username,
+        fullName: user.fullName,
+        age: user.age,
+        email: user.email,
+        isActive: user.isActive,
+        hobbies: user.hobbies,
+        address: user.address,
+      },
     });
   } catch (error: any) {
-    res.status(400).json({
+    res.status(404).json({
       success: false,
-      message: 'Failed to fetch users!',
+      message: 'User not found',
       error: {
-        code: 400,
+        code: 404,
         description: error.message,
       },
     });
   }
 };
-// Update a User by userId
+
+
+//* 4. Update a User by userId
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -102,7 +115,7 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-// Delete a User by userId
+//* 5. Delete a User by userId
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -124,7 +137,7 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-//  Add an Order to a User
+//? 1. Add an Order to a User
 const addProductToOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -152,7 +165,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
   }
 };
 
-// Get orders of a User
+//? 2. Get orders of a User
 const getAllOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -177,8 +190,7 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-
-// Calculate the total price of orders of a user
+//? 3. Calculate the total price of orders of a user
 const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
