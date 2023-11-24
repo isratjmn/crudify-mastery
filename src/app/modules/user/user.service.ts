@@ -112,16 +112,15 @@ const getAllOrdersForUser = async (userId: number) => {
 //? 3. Calculate the total price of the Orders
 const calculateTotalPrice = async (userId: number) => {
   try {
-    const user = await User.findOne({ userId });
+    const user = await User.isUserExist(userId);
     if (!user) {
       throw new Error('User Not Found');
     }
-    const totalPrice =
-      user.orders?.reduce(
-        (acc, order) => acc + order.price * order.quantity,
-        0
-      ) || 0;
-    return totalPrice;
+    const totalPrice = user.orders?.reduce(
+      (acc, order) => acc + order.price * order.quantity,
+      0
+    );
+    return totalPrice || 0;
   } catch (error) {
     throw new Error('Failed to Calculate Total Price');
   }

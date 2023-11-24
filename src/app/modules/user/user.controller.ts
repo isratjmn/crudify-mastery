@@ -58,7 +58,6 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 //* 3. Get a User by Id
 const getSingleUserById = async (req: Request, res: Response) => {
-
   try {
     const { userId } = req.params;
     const user = await UserServices.getUserByIdFromDB(parseInt(userId));
@@ -87,7 +86,6 @@ const getSingleUserById = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 //* 4. Update a User by userId
 const updateUser = async (req: Request, res: Response) => {
@@ -195,7 +193,6 @@ const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const totalPrice = await UserServices.calculateTotalPrice(parseInt(userId));
-
     res.status(200).json({
       success: true,
       message: 'Total price calculated successfully!',

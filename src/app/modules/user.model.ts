@@ -115,7 +115,7 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-// Custom static method for the user schema
+// Custom static method for the User Schema
 userSchema.statics.isUserExist = async function (
   userId: number
 ): Promise<TUser | null> {
