@@ -179,7 +179,7 @@ const getAllOrders = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: 'Failed to fetch orders',
+      message: 'Failed to Fetch orders',
       error: {
         code: 404,
         description: error.message,

@@ -79,19 +79,14 @@ const addProductToOrder = async (
   orderData: { productName: string; price: number; quantity: number }
 ) => {
   try {
-    const user = await User.findOne({ userId });
-
-    if (!user) {
+    const existingUser = await User.isUserExist(userId);
+    if (!existingUser) {
       throw new Error('User not Found');
     }
-    // If 'orders' property already exists, append the new product; otherwise, create 'orders' array
-    if (user.orders) {
-      user.orders.push(orderData);
-    } else {
-      user.orders = [orderData];
-    }
-    await user.save();
-    return null;
+    const newOrders = existingUser.orders
+      ? [...existingUser.orders, orderData]
+      : [orderData];
+    await User.updateOne({ userId }, { $set: { orders: newOrders } });
   } catch (error) {
     throw new Error('Failed to add product to order');
   }
@@ -104,7 +99,7 @@ const getAllOrdersForUser = async (userId: number) => {
     { _id: 0, password: 0, isActive: 0, hobbies: 0 }
   );
   if (!user) {
-    throw new Error('User not found');
+    throw new Error('User not Found');
   }
   return user.orders || [];
 };
