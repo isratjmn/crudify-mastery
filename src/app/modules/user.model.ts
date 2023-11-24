@@ -1,5 +1,11 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TUser, TUserOrder } from './user/user.interface';
+import {
+  TAddress,
+  TFullName,
+  TUser,
+  TUserOrder,
+  userModel,
+} from './user/user.interface';
 
 // MongoDB Schema for FullName
 const fullNameSchema = new Schema<TFullName>({
@@ -48,7 +54,7 @@ const orderSchema = new Schema<TUserOrder>({
 
 // MongoDB Schema for User
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TUser, userModel>({
   userId: {
     type: Number,
     unique: true,
@@ -67,7 +73,6 @@ const userSchema = new Schema<TUser>({
   fullName: fullNameSchema,
   age: {
     type: Number,
-
   },
   email: {
     type: String,
@@ -92,4 +97,12 @@ const userSchema = new Schema<TUser>({
   },
 });
 
-export const UserModel = model<TUser>('User', userSchema);
+// Custom static method for the user schema
+userSchema.statics.isUserExist = async function (
+  userId: number
+): Promise<TUser | null> {
+  const existingUser = await User.findOne({ userId });
+  return existingUser;
+};
+
+export const User = model<TUser, userModel>('User', userSchema);
