@@ -77,13 +77,15 @@ const getSingleUserById = async (req: Request, res: Response) => {
     });
   }
 };
-// Controller for updating a User by userId
+// Update a User by userId
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const updatedUserData = req.body;
-    
-    const result = await UserServices.updateUserInDB(Number(userId), updatedUserData);
+    const result = await UserServices.updateUserInDB(
+      Number(userId),
+      updatedUserData
+    );
     res.status(200).json({
       success: true,
       message: 'User updated successfully!',
@@ -104,11 +106,8 @@ const updateUser = async (req: Request, res: Response) => {
 // Delete a User by userId
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    // Get the user id from the request params
     const { userId } = req.params;
     await UserServices.deleteUserFromDB(Number(userId));
-
-    // Send the response
     res.status(200).json({
       success: true,
       message: 'User deleted successfully!',
@@ -126,6 +125,7 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+//  add an Order to a User
 const addProductToOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -156,6 +156,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
   }
 };
 
+// Get orders of a User
 const getAllOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -168,13 +169,39 @@ const getAllOrders = async (req: Request, res: Response) => {
         orders,
       },
     });
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
       message: 'Failed to fetch orders',
       error: {
         code: 404,
         description: error.message,
+      },
+    });
+  }
+};
+
+
+// Calculate the total price of orders of a user
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const totalPrice = await UserServices.calculateTotalPrice(parseInt(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: {
+        totalPrice,
+      },
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
       },
     });
   }
@@ -188,4 +215,5 @@ export const userControllers = {
   deleteUser,
   addProductToOrder,
   getAllOrders,
+  getTotalPrice,
 };

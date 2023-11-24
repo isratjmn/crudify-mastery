@@ -64,6 +64,8 @@ const deleteUserFromDB = async (userId: number) => {
   return null;
 };
 
+
+// Service function to add an Order
 const addProductToOrder = async (
   userId: number,
   orderData: { productName: string; price: number; quantity: number }
@@ -72,7 +74,7 @@ const addProductToOrder = async (
     const user = await User.findOne({ userId });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('User not Found');
     }
     // If 'orders' property already exists, append the new product; otherwise, create 'orders' array
     if (user.orders) {
@@ -87,6 +89,8 @@ const addProductToOrder = async (
   }
 };
 
+
+// Service function to get Orders of a User
 const getAllOrdersForUser = async (userId: number) => {
   const user = await User.findOne(
     { userId },
@@ -98,6 +102,20 @@ const getAllOrdersForUser = async (userId: number) => {
   return user.orders || [];
 };
 
+// Calculate the total price of the Orders
+const calculateTotalPrice = async (userId: number) => {
+  try {
+    const user = await User.findOne({ userId });
+    if (!user) {
+      throw new Error('User Not Found');
+    }
+    const totalPrice = user.orders?.reduce((acc, order) => acc + order.price * order.quantity, 0) || 0;
+    return totalPrice;
+  } catch (error) {
+    throw new Error('Failed to Calculate Total Price');
+  }
+}
+
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -106,4 +124,5 @@ export const UserServices = {
   updateUserInDB,
   addProductToOrder,
   getAllOrdersForUser,
+  calculateTotalPrice
 };

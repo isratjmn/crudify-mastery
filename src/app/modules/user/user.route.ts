@@ -18,6 +18,6 @@ router.put('/:userId/orders', userControllers.addProductToOrder);
 
 router.get('/:userId/orders', userControllers.getAllOrders);
 
-// router.get('/:userId/orders/total-price', calculateTotalPriceController);
+router.get('/:userId/orders/total-price', userControllers.getTotalPrice);
 
 export const UserRoutes = router;
