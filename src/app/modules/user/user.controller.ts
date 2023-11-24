@@ -124,12 +124,7 @@ const deleteUser = async (req: Request, res: Response) => {
 const addProductToOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { productName, price, quantity } = req.body;
-    const orderData = {
-      productName,
-      price,
-      quantity,
-    };
+    const orderData = req.body;
     await UserServices.addProductToOrder(parseInt(userId), orderData);
     res.status(200).json({
       success: true,

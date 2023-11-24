@@ -76,13 +76,17 @@ const addProductToOrder = async (
 ) => {
   try {
     const existingUser = await User.isUserExist(userId);
+
     if (!existingUser) {
       throw new Error('User not Found');
+    } else {
+      const updatedUser = await User.findOneAndUpdate(
+        { userId },
+        { $push: { orders: orderData } },
+        { new: true }
+      );
+      return updatedUser;
     }
-    const newOrders = existingUser.orders
-      ? [...existingUser.orders, orderData]
-      : [orderData];
-    await User.updateOne({ userId }, { $set: { orders: newOrders } });
   } catch (error) {
     throw new Error('Failed to add product to order');
   }
