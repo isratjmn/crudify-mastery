@@ -40,14 +40,14 @@ const getAllUsers = async (req: Request, res: Response) => {
     const result = await UserServices.getAllUsersFromDB();
     res.status(200).json({
       success: true,
-      message: 'Users fetched successfully!',
+      message: 'Users Fetched successfully!',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: 'Failed to fetch users!',
+      message: 'Failed to Fetch users!',
       error: {
         code: 400,
         description: error.message,
@@ -77,19 +77,17 @@ const getSingleUserById = async (req: Request, res: Response) => {
     });
   }
 };
-// Update User 
+// Controller for updating a User by userId
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const updatedUserData = req.body;
-    // Validate updated user data
-    const parsedData = validateUser(updatedUserData);
-    // Update user in the database
-    const updatedUser = await UserServices.updateUserInDB(parseInt(userId, 10), parsedData);
+    
+    const result = await UserServices.updateUserInDB(Number(userId), updatedUserData);
     res.status(200).json({
       success: true,
       message: 'User updated successfully!',
-      data: updatedUser,
+      data: result,
     });
   } catch (error: any) {
     res.status(400).json({
@@ -128,11 +126,66 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+const addProductToOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { productName, price, quantity } = req.body;
+
+    const orderData = {
+      productName,
+      price,
+      quantity,
+    };
+
+    await UserServices.addProductToOrder(parseInt(userId), orderData);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Failed to add product to order!',
+      error: {
+        code: 400,
+        description: error.message,
+      },
+    });
+  }
+};
+
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const orders = await UserServices.getAllOrdersForUser(parseInt(userId, 10));
+
+    res.status(200).json({
+      success: true,
+      message: 'Orders Fetched successfully!',
+      data: {
+        orders,
+      },
+    });
+  } catch (error:any) {
+    res.status(404).json({
+      success: false,
+      message: 'Failed to fetch orders',
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
   getAllUsers,
   getSingleUserById,
   updateUser,
   deleteUser,
-
+  addProductToOrder,
+  getAllOrders,
 };
