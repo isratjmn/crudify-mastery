@@ -7,13 +7,15 @@ app.use(express.json());
 app.use(cors());
 
 // Application Routes
-app.use("/api/v1/users", UserRoutes)
+app.use('/api/v1/users', UserRoutes);
 
 const getAController = (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.status(200).json({
+    success: true,
+    message: 'Crudify Mastery Server is saying Hello!!!',
+  });
 };
+
 app.get('/', getAController);
-
 console.log(process.cwd());
-
 export default app;

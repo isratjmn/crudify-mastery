@@ -38,7 +38,6 @@ const addressSchema = new Schema<TAddress>({
 });
 
 // MongoDB Schema for Order
-
 const orderSchema = new Schema<TUserOrder>({
   productName: {
     type: String,
@@ -55,7 +54,6 @@ const orderSchema = new Schema<TUserOrder>({
 });
 
 // MongoDB Schema for User
-
 const userSchema = new Schema<TUser, userModel>({
   userId: {
     type: Number,

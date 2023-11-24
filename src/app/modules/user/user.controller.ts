@@ -13,7 +13,6 @@ const createUser = async (req: Request, res: Response) => {
       : [userData.hobbies];
 
     const validateData = validateUser(userData);
-    // Create user in the database
     const result = await UserServices.createUserIntoDB({
       ...validateData,
       hobbies,
@@ -125,20 +124,17 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-//  add an Order to a User
+//  Add an Order to a User
 const addProductToOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const { productName, price, quantity } = req.body;
-
     const orderData = {
       productName,
       price,
       quantity,
     };
-
     await UserServices.addProductToOrder(parseInt(userId), orderData);
-
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',

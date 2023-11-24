@@ -12,6 +12,7 @@ export type TAddress = {
     city: string;
     country: string;
 };
+
 export type TFullName = {
     firstName: string;
     lastName: string;
