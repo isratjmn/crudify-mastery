@@ -114,7 +114,7 @@ const deleteUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: 'Failed to Delete user!',
+      message: 'Failed to Delete User!',
       error: error,
     });
   }
@@ -139,7 +139,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: 'Failed to add product to order!',
+      message: 'Failed to add product to Order!',
       error: error,
     });
   }
@@ -161,7 +161,7 @@ const getAllOrders = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: 'Failed to Fetch orders',
+      message: 'Failed to Fetch Orders',
       error: error,
     });
   }
@@ -176,7 +176,7 @@ const getTotalPrice = async (req: Request, res: Response) => {
       success: true,
       message: 'Total price calculated successfully!',
       data: {
-        totalPrice,
+        totalPrice: Number(totalPrice.toFixed(2)),
       },
     });
   } catch (error: any) {
