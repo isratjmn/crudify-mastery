@@ -99,7 +99,7 @@ const userSchema = new Schema<TUser, userModel>({
 });
 
 // Pre Save  Hook for the User Schema
-userSchema.pre('save', async function (next) {
+/* userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   user.password = await bcrypt.hash(
@@ -107,13 +107,33 @@ userSchema.pre('save', async function (next) {
     Number(config.bcrypt_salt_rounds)
   );
   next();
+}); */
+
+
+userSchema.pre('save', async function (next) {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const user = this;
+    if (!user.password) {
+      throw new Error('Password is Undefined');
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds)
+    );
+    user.password = hashedPassword;
+    next();
+  } catch (error) {
+    next(error as Error);
+  }
 });
 
 
 
 // Post Find Hook for the User Schema
 userSchema.post('find', function (docs: TUser[], next) {
-  // Exclude password and orders from the query results
+
   docs.forEach((doc) => {
     if (doc) {
       doc.password = undefined;
@@ -125,7 +145,6 @@ userSchema.post('find', function (docs: TUser[], next) {
 
 // Post Save Hook for the User Schema
 userSchema.post('save', function (doc, next) {
-  // Exclude password and orders from the response
   if (doc) {
     doc.password = undefined;
     doc.orders = undefined;
