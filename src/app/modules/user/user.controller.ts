@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
-import { validateUser } from './user.validation';
+import userValidationSchema from './user.validation';
+// import { validateUser } from './user.validation';
 
 //* 1. Create a new User
 const createUser = async (req: Request, res: Response) => {
@@ -11,8 +12,7 @@ const createUser = async (req: Request, res: Response) => {
     const hobbies = Array.isArray(userData.hobbies)
       ? userData.hobbies
       : [userData.hobbies];
-
-    const validateData = validateUser(userData);
+    const validateData = userValidationSchema.parse(userData);
     const result = await UserServices.createUserIntoDB({
       ...validateData,
       hobbies,
@@ -26,10 +26,7 @@ const createUser = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Failed to create user!',
-      error: {
-        code: 400,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -48,10 +45,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Failed to Fetch users!',
-      error: {
-        code: 400,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -79,10 +73,7 @@ const getSingleUserById = async (req: Request, res: Response) => {
     res.status(404).json({
       success: false,
       message: 'User not found',
-      error: {
-        code: 404,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -105,10 +96,7 @@ const updateUser = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Failed to Update User!',
-      error: {
-        code: 400,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -127,10 +115,7 @@ const deleteUser = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Failed to Delete user!',
-      error: {
-        code: 400,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -155,10 +140,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Failed to add product to order!',
-      error: {
-        code: 400,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -180,10 +162,7 @@ const getAllOrders = async (req: Request, res: Response) => {
     res.status(404).json({
       success: false,
       message: 'Failed to Fetch orders',
-      error: {
-        code: 404,
-        description: error.message,
-      },
+      error: error,
     });
   }
 };
@@ -204,10 +183,7 @@ const getTotalPrice = async (req: Request, res: Response) => {
     res.status(404).json({
       success: false,
       message: 'User not found',
-      error: {
-        code: 404,
-        description: 'User not found!',
-      },
+      error: error,
     });
   }
 };
