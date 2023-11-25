@@ -94,12 +94,10 @@ const userSchema = new Schema<TUser, userModel>({
   },
   orders: {
     type: [orderSchema],
-    select: false,
   },
 });
 
 // Pre Save  Hook for the User Schema
-
 userSchema.pre('save', async function (next) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -123,7 +121,6 @@ userSchema.post('find', function (docs: TUser[], next) {
   docs.forEach((doc) => {
     if (doc) {
       doc.password = undefined;
-      doc.orders = undefined;
     }
   });
   next();
@@ -133,7 +130,6 @@ userSchema.post('find', function (docs: TUser[], next) {
 userSchema.post('save', function (doc, next) {
   if (doc) {
     doc.password = undefined;
-    doc.orders = undefined;
   }
   next();
 });
